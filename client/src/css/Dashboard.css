@@ -1,0 +1,41 @@
+
+#dashboard {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card {
+    text-align: center;
+}
+
+.profile-icon {
+    font-size: 3rem;
+    color: #007bff;
+}
+
+.stats-card {
+    text-align: center;
+}
+
+.stats-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+    
+}
+
+
