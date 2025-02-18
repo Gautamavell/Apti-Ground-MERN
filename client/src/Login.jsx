@@ -41,8 +41,6 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    alert(password)
-    alert(email)
     axios
       .post("http://127.0.0.1:3001/login", { email, password })
       .then((result) => {
