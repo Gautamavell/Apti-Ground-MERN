@@ -1,0 +1,58 @@
+.sidebar {
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1050; /* Make sure sidebar is above content */
+    transition: transform 0.3s ease-in-out;
+
+}
+
+.sidebar.d-none {
+    transform: translateX(-100%);
+}
+
+.sidebar.d-block {
+    transform: translateX(0);
+}
+
+.sidebar h4 {
+    font-weight: bold;
+}
+
+.sidebar .nav-link {
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #e2e6ea;
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+    color: rgb(255, 255, 255);
+}
+
+
+
+
+.card-hover-border-dark {
+    --c: #141414; /* the border color */
+    --b: 1px;    /* the border thickness*/
+    --g: px;     /* the gap on hover */
+    
+    padding: calc(var(--g) + var(--b));
+    --_g: #0000 25%,var(--c) 0;
+    background: 
+      conic-gradient(from 180deg at top    var(--b) right var(--b),var(--_g))
+       var(--_i,200%) 0  /200% var(--_i,var(--b))  no-repeat,
+      conic-gradient(            at bottom var(--b) left  var(--b),var(--_g))
+       0   var(--_i,200%)/var(--_i,var(--b)) 200%  no-repeat;
+    transition: .3s, background-position .3s .3s;
+    cursor: pointer;
+  
+}
+.card-hover-border-dark:hover {
+    --_i: 100%;
+    transition: .3s, background-size .3s .3s;
+  }

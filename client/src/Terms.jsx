@@ -4,6 +4,8 @@ import Footer from './comp/Footer'
 import { FaBars } from 'react-icons/fa';
 import { Nav ,Card,CardBody,CardText,CardTitle} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import './css/sidebar.css'
+
 
 export default function Terms() {
     const[collapsed,setCollapsed]=useState(false);
@@ -23,22 +25,22 @@ export default function Terms() {
                     </div>
                     <h4 className='ms-2'>Side Navbar</h4>
                     <Nav className="flex-column">
-                        <Nav.Item>
-                            <Nav.Link href='/dashboard'>My Dashboard</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/home">Home</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/about">About</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/service">Services</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="#">Contact</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
+                    <Nav.Item>
+                        <Nav.Link href='/dashboard'  className="text-dark">My Dashboard</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/home" className="text-dark">Home</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/about" className="text-dark">About</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/service" className="text-dark">Services</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/contact" className="text-dark">Contact</Nav.Link>
+                    </Nav.Item>
+                </Nav>
                 </div>
             </div>
 

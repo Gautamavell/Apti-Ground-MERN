@@ -38,4 +38,9 @@ a{
     
 }
 
+.card-hover-border-dark:hover {
+    border-color: #343a40 !important; /* Dark border color on hover */
+  }
+  
+
 

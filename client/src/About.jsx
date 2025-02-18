@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardBody, CardText, CardTitle, Nav } from 'react-bootstrap';
+import './css/sidebar.css'
 
 export default function About() {
         const [collapsed, setCollapsed] = useState(false);
@@ -18,29 +19,31 @@ export default function About() {
        <div className="container-fluid p-0">
           <div className='row w-100 pl-2'>
             <div className={`${collapsed ? '' : 'col-lg-2 col-12 p-0'}`}>
-                <div className={`sidebar h-100 bg-light p-3 ${collapsed ? 'd-none' : ''}`} >
-                    <div className="d-flex justify-content-end mb-3">
-                        <FaBars onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
-                    </div>
-                    <h4 className='ms-2'>Side Navbar</h4>
-                    <Nav className="flex-column">
-                        <Nav.Item>
-                            <Nav.Link href='/dashboard'>My Dashboard</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/home">Home</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/about">About</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/service">Services</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/contact">Contact</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                </div>
+            
+            <div className={`sidebar h-100 bg-light p-3 ${collapsed ? 'd-none' : 'd-block'}`}>
+        <div className="d-flex justify-content-end mb-3">
+            <FaBars onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
+        </div>
+        <h4 className="ms-2 ">Side Navbar</h4>
+        <Nav className="flex-column">
+            <Nav.Item>
+                <Nav.Link href='/dashboard' className="text-dark">My Dashboard</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/home" className="text-dark">Home</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/about" className="text-dark">About</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/service" className="text-dark">Services</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/contact" className="text-dark">Contact</Nav.Link>
+            </Nav.Item>
+        </Nav>
+    </div>
+
             </div>
 
             <div className={`row ${collapsed?'col-lg-12 pl-2 ':'col-lg-10 '} `}>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,useRef} from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Button, Form, ProgressBar, ListGroup, Card } from 'react-bootstrap';
 import './css/Test.css'; 
@@ -7,12 +7,11 @@ import {Sample25,SampleLR,SampleQA} from './SampleQuestions';
 export default function Test({type}) {
     const [questions, setQuestions] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [selectedOption, setSelectedOption] = useState();
-    const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(type==='test25'?1800:900); //Set overall test duration   
     const [countdown, setCountdown] = useState(3); //Set initial countdown value
     const [testStarted, setTestStarted] = useState(false); //Track if the test has started
-    const [attempted,setattempted] = useState([])
+    const chosenOption=useRef([]);
+
 
 
     useEffect(() => {
@@ -22,8 +21,11 @@ export default function Test({type}) {
                 console.log('Calling endpoint:',url+type);
                 console.log(response);
                 setQuestions(response.data);
+                initializeEmptyOption(response.data);
             })
-            .catch(error => console.error('Error fetching questions:', error));
+            .catch(error => {
+                console.error('Error fetching questions:', error)
+            });
     },[]);
 
     useEffect(() => {
@@ -46,14 +48,27 @@ export default function Test({type}) {
         }
     }, [countdown]);
 
-    const handleOptionChange = (e) => {
-        setSelectedOption(e.target.value);
+    useEffect(() => {
+    if (questions.length === 0) {
+        console.log('Failed to fetch questions, using sample questions.');
+        setQuestions(type === 'testlr' ? SampleLR : type === 'testqa' ? SampleQA : Sample25);
+        initializeEmptyOption(questions);
+    }
+}, [questions, type]);
+
+
+    function initializeEmptyOption(question){
+        const initialOption=question.map(()=>'null')
+        chosenOption.current=initialOption;
+    }
+
+
+
+    const handleOptionChange = (index,value) => {
+        chosenOption.current[index]=value
     };
 
     const handleNextQuestion = () => {
-        if (selectedOption === questions[currentQuestion].correctAnswer) {
-            setScore(score + 1);
-        }
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
         } else {
@@ -66,14 +81,15 @@ export default function Test({type}) {
     };
 
     const handleSubmit = () => {
+        let score=0
+        for(let i=0;i<questions.length;i++){
+            if (chosenOption.current[i] === questions[i].correctAnswer) {
+                score=score+1;
+            }
+        }
         localStorage.setItem('score', score);
         window.location.href =type+'/result';
     };
-
-    if (questions.length === 0) {
-        type==='testlr'?setQuestions(SampleLR):(type==='testqa'?setQuestions(SampleQA):setQuestions(Sample25))
-        console.log('Failed to fetch questions, using sample questions.')
-    }
 
     if (!questions[currentQuestion]) {
         return <Container>Error: Question not found.</Container>;
@@ -134,8 +150,8 @@ export default function Test({type}) {
                                             key={index}
                                             label={option}
                                             value={option}
-                                            checked={selectedOption === option}
-                                            onChange={handleOptionChange}
+                                            checked={chosenOption.current[currentQuestion] === option}
+                                            onChange={()=>{handleOptionChange(currentQuestion,option)}}
                                             className="my-2"
                                         />
                                     ))}

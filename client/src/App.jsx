@@ -10,6 +10,8 @@ import About from './About';
 import Service from './Service';
 import Terms from './Terms';
 import Contact from './Contact';
+import ScrollToTop from './ScrollToTop';
+
 
 
 
@@ -17,6 +19,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop/>
       <Routes>
         <Route path='/register' element={<Signup/>}></Route>
         <Route path='/' element={<Login/>}></Route>

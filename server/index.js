@@ -18,11 +18,12 @@ app.post('/register',(req,res)=>{
 })
 
 app.post('/login',(req,res)=>{
-    const {email,pass}=req.body;
+    const {email,password}=req.body;
     StudentsModel.findOne({email:email})
     .then(user=>{
         if(user){
-            if(user.pass===pass){
+            console.log(user.password)
+            if(user.password===password){
                 res.json(["success",user])
             }else{
                 res.json("Incorrect Password")
@@ -33,21 +34,52 @@ app.post('/login',(req,res)=>{
     })    
 })
 
-app.get('/testlr', (req, res) => {
-    QuestionModellr.aggregate([{ $sample: { size: 10 } }])
-        .then(questions => {
-           if (Array.isArray(questions)) {
-                console.log('Number of questions:', questions.length);
+app.get('/testlr',(req, res)=>{
+    QuestionModellr.aggregate([{$sample:{size:10}}])
+        .then(questions=>{
+           if(Array.isArray(questions)){
+                console.log('Number of questions:',questions.length);
                 res.json(questions);
-            } else {
+            }else{
                 throw new Error('Expected questions to be an array');
             }
         })
-        .catch(err => {
+        .catch(err=>{
             console.error(err);
             res.status(500).send(err.message);
         });
 });
+
+app.get("/test25",(req,res)=>{
+    let data=[];
+    QuestionModellr.aggregate([{$sample:{size:13}}])
+        .then(questions=>{
+            if(Array.isArray(questions)){
+                console.log("Fetched from lr for test25...");
+                data=[...questions];
+            }else{
+                throw new error("Expected questions to be in array");
+            }
+        })
+        .catch(err=>{
+            console.error(err);
+            res.status(500).send(err.message);
+        })
+        QuestionModelqa.aggregate([{$sample:{size:12}}])
+        .then(questions=>{
+            if(Array.isArray(questions)){
+                console.log("Fetched from qa for test25...");
+                data=[...questions];
+            }else{
+                throw new error("Expected questions to be in array");
+            }
+        })
+        .catch(err=>{
+            console.error(err);
+            res.status(500).send(err.message);
+        })
+        res.json(data);
+})
 
 app.get('/testqa', (req, res) => {
     QuestionModelqa.aggregate([{ $sample: { size: 10 } }])

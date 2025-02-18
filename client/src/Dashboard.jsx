@@ -7,6 +7,8 @@ import './css/Dashboard.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBrain } from '@fortawesome/free-solid-svg-icons';
 import Footer from './comp/Footer';
+import './css/sidebar.css'
+
 
 
 // Registering necessary components
@@ -73,6 +75,22 @@ export default function Dashboard() {
         window.location.href='/'
     }
 
+    
+        
+
+    function calcProgress(a) {
+        let s = 0;
+        for (let i = 1; i < a.length; i++) {
+            s =s+ +a[i];
+            console.log(a[i])
+        }
+        console.log(s);
+        return ((s / ((a.length-1)*a[0])) * 100).toFixed(2);
+    }
+    const progressScore25=calcProgress(userDetails.score25);
+    const progressScorelr=calcProgress(userDetails.scorelr);
+    const progressScoreqa=calcProgress(userDetails.scoreqa);
+    
     return (
         <>
         <div className='header'>
@@ -87,7 +105,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div>
-                    <Button variant="secondary p-2 m-2" onClick={()=>handleLogout()}>Logout</Button>
+                    <Button variant="outline-dark p-2 m-2" onClick={()=>handleLogout()}>Logout</Button>
                 </div>
             </div>
         </div>
@@ -96,27 +114,27 @@ export default function Dashboard() {
           <div className='row w-100 pe-2'>
             <div className={`${collapsed ? '' : 'col-lg-2 col-12 p-0'}`}>
                 <div className={`sidebar h-100 bg-light p-3 ${collapsed ? 'd-none' : 'animate__animated animate__slideInLeft'}`} >
-                    <div className="d-flex justify-content-end mb-2">
+                    <div className="d-flex justify-content-end mb-3">
                         <FaBars onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
                     </div>
                     <h4 className='ms-2'>Side Navbar</h4>
                     <Nav className="flex-column">
-                        <Nav.Item>
-                            <Nav.Link href='/dashboard'>My Dashboard</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/home">Home</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/about">About</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/service">Services</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href="/contact">Contact</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
+                    <Nav.Item>
+                        <Nav.Link href='/dashboard' className="text-dark">My Dashboard</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/home" className="text-dark">Home</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/about" className="text-dark">About</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/service" className="text-dark">Services</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/contact" className="text-dark">Contact</Nav.Link>
+                    </Nav.Item>
+                </Nav>
                 </div>
             </div>
 
@@ -130,9 +148,9 @@ export default function Dashboard() {
                     <Container className="mt-5 mb-5" id='dashboard'>
                         <Row className="mb-4">
                             <Col md={4}>
-                                <Card className="profile-card">
+                                <Card className="profile-card  ">
                                     <Card.Body>
-                                        <FaUser className="profile-icon" />
+                                        <FaUser className="profile-icon" style={{color:'black'}} />
                                         <h5 className="mt-3">{userDetails.name}</h5>
                                         <p>{userDetails.email}</p>
                                     </Card.Body>
@@ -141,7 +159,34 @@ export default function Dashboard() {
                             <Col md={8}>
                                 <Card>
                                     <Card.Body>
-                                        <h5>Score Analysis</h5>
+                                        <h5 className='mt-2'>Score Analysis</h5>
+                                        <div className='container-fluid justify-content-between'>
+                                            <div className='row'>
+                                                <div className='col-lg-4 col-12'>
+                                                    <p className='mt-2 mb-0'>Today's 25 :</p>
+                                                </div>
+                                                <div className='col-lg-8 col-12'>
+                                                    <ProgressBar animated now={progressScore25} label={progressScore25} className="mt-3" />
+                                                </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col-lg-4 col-12'>
+                                                    <p className='mb-0 mt-2'>Logical and Reasoning :</p>
+                                                </div>
+                                                <div className='col-lg-8 col-12'>
+                                                    <ProgressBar animated now={progressScorelr} label={progressScorelr} className="mt-3" />
+                                                </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col-lg-4 col-12'>
+                                                <p className='mb-0 mt-2'> Quantitative Analysis :</p>
+                                                </div>
+                                                <div className='col-lg-8 col-12'>
+                                                <ProgressBar animated now={progressScoreqa} label={progressScoreqa} className="mt-3" />
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </Card.Body>
                                 </Card>
                             </Col>
