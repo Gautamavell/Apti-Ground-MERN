@@ -22,10 +22,14 @@ function Signup() {
         navigate('/')
         })
         .catch(error=>{
-            if (error.code === 'ERR_NETWORK')
-                 { console.error('Network error:', error); } 
-            else 
+            if (error.code === 'ERR_NETWORK'){
+                console.error('Network error:', error); 
+                alert('Not connected to server.(enter any value and login to check out the site with dummy user)')
+                navigate('/')
+            } else 
                  { console.error('Error response:', error.response); }
+            
+
         })
         
     }
