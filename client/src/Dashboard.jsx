@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBrain } from '@fortawesome/free-solid-svg-icons';
 import Footer from './comp/Footer';
 import './css/sidebar.css'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -17,10 +18,25 @@ ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip)
 export default function Dashboard() {
     const [userDetails, setUserDetails] = useState(null);
     const [collapsed, setCollapsed] = useState(false);
+    const [loggedIn,setloggedIn]=useState(true);
+    const navigate=useNavigate()
+    
+    useEffect(()=>{
+        if(!loggedIn){
+          navigate('/');
+        }
+      },[loggedIn])
 
+    useEffect(()=>{
+        setloggedIn(JSON.parse(localStorage.getItem('isLoggedIn')));
+      },[])
+    
+    
     const toggleSidebar = () => {
         setCollapsed(!collapsed);
     };
+
+    
 
     useEffect(() => {
         const storedUserDetails = JSON.parse(localStorage.getItem('userDetails'));
@@ -72,7 +88,8 @@ export default function Dashboard() {
 
     const handleLogout=()=>{
         localStorage.clear();
-        window.location.href='/'
+        localStorage.setItem('isLoggedIn',JSON.stringify(false));
+        setloggedIn(false);
     }
 
     
@@ -82,9 +99,7 @@ export default function Dashboard() {
         let s = 0;
         for (let i = 1; i < a.length; i++) {
             s =s+ +a[i];
-            console.log(a[i])
         }
-        console.log(s);
         return ((s / ((a.length-1)*a[0])) * 100).toFixed(2);
     }
     const progressScore25=calcProgress(userDetails.score25);

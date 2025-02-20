@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,15 @@ function Login() {
   const [password,setPassword]=useState();
   const navigate=useNavigate();
   const [message,setMessage]=useState();
+  const [loggedIn,setloggedIn]=useState(false); 
+
+  useEffect(()=>{
+    setloggedIn(JSON.parse(localStorage.getItem('isLoggedIn')))
+    console.log(loggedIn)
+    if(loggedIn){
+      navigate('/home');
+    }else{navigate('/')}
+  },[loggedIn])
 
   const aptibg={
     backgroundImage:'url(https://img.freepik.com/premium-vector/school-doodle-pattern-black-white-hand-drawn-education-elements-school-seamless-background_502651-628.jpg )',
@@ -48,7 +57,8 @@ function Login() {
         if (result.data[0] === "success") {
           const userDetails = { ...result.data[1] };
           localStorage.setItem("userDetails", JSON.stringify(userDetails));
-          navigate("/home");
+          localStorage.setItem("isLoggedIn", JSON.stringify(true));
+          setloggedIn(!loggedIn);
         } else {
           setMessage(result.data);
         }
@@ -229,7 +239,7 @@ function Login() {
                 </Carousel.Item>
               </Carousel>
              
-              <div className="d-flex m-5 " style={{borderRadius:'20px' ,backgroundColor:'rgb(255, 255, 255)'}}>
+              <div className="d-flex m-5 " style={{borderRadius:'7px' ,backgroundColor:'rgb(255, 255, 255)'}}>
                 <FontAwesomeIcon  className=" p-2" icon={faBrain} style={{color:'black', width:'65', height:'65'}} />
                 <div className="d-flex flex-column p-2 mb-2" style={{color:'#000'}}>
                   <div style={{fontWeight: 'bold',fontSize: '1.5rem'}}>APTI-GROUND</div>

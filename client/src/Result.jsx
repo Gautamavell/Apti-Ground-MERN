@@ -13,23 +13,25 @@ import Footer from './comp/Footer';
 export default function Result({ type,test }) {
     const userDetails = JSON.parse(localStorage.getItem('userDetails')) || {};
     const totalScore = userDetails[type][0];
-    const score = localStorage.getItem('score') || 'No score available';
-    const updateRef = useRef(false);
+    const score =localStorage.getItem('score') || 'No score available';
+    const updateRef = useRef(localStorage.getItem('isScoreUpdated')||false);
     useEffect(() => {
         if (!updateRef.current){
             updateRef.current = true;
             userDetails[type].push(score);
-            localStorage.setItem('userDetails', JSON.stringify(userDetails));
-            const updateUserDetails = async () => {
+            localStorage.setItem('userDetails',JSON.stringify(userDetails));
+            localStorage.setItem('isScoreUpdated',JSON.stringify(updateRef.current));
+            const updateUserDetails = async()=>{
                 try {
                     await axios.put('http://127.0.0.1:3001/updateScore', userDetails);
                 } catch (error) {
                     console.error('Error updating user details (Results):', error);
                 }
             };
-            updateUserDetails();
+            if(updateRef.current){
+                updateUserDetails();
+            }
             localStorage.removeItem('score')
-
     }
 
     }, [type, score]);
@@ -58,7 +60,7 @@ export default function Result({ type,test }) {
                             <Card.Text className="text-center animate__animated animate__fadeInUp animate__delay-3s">
                                 <strong>User Name:</strong> {userDetails.name || 'No name available'}
                             </Card.Text>
-                            <div className='d-flex justify-content-center align-items-center animate__animated animate__zoomIn animate__delay-5s'>
+                            <div className='d-flex justify-content-center align-items-center animate__animated animate__zoomIn animate__delay-4s'>
                                 <Link to='/home' className='btn btn-dark align-center ' type='button'>Home</Link>
                             </div>
                         </Card.Body>

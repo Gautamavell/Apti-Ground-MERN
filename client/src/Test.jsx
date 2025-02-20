@@ -88,6 +88,7 @@ export default function Test({type}) {
             }
         }
         localStorage.setItem('score', score);
+        localStorage.removeItem('isScoreUpdated');
         window.location.href =type+'/result';
     };
 

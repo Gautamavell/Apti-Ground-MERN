@@ -22,7 +22,6 @@ app.post('/login',(req,res)=>{
     StudentsModel.findOne({email:email})
     .then(user=>{
         if(user){
-            console.log(user.password)
             if(user.password===password){
                 res.json(["success",user])
             }else{
@@ -100,11 +99,9 @@ app.get('/testqa', (req, res) => {
 
 app.put('/updateScore',(req,res)=>{
     const {email}=req.body;
-    console.log(req.body)
     StudentsModel.findOneAndUpdate({email:email},req.body,{new:true,runValidators: true})
     .then(student=>{
-        console.log("Updated results.");
-        console.log(student)
+        console.log("results updated.");
         res.status(200).send(student);
     })
     .catch(err=>{

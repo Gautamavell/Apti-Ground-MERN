@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Nav } from 'react-bootstrap';
 import { FaBars } from 'react-icons/fa';
@@ -7,12 +7,21 @@ import Header from './comp/Header';
 import Footer from './comp/Footer';
 import './css/sidebar.css'
 
-
-
-
 const Home = () => {
     const userDetails=JSON.parse(localStorage.getItem('userDetails'));
     const [collapsed, setCollapsed] = useState(false);
+    const [loggedIn,setloggedIn]=useState(true);
+    const navigate=useNavigate()
+    
+    useEffect(()=>{
+        if(!loggedIn){
+          navigate('/');
+        }
+      },[loggedIn])
+
+    useEffect(()=>{
+        setloggedIn(JSON.parse(localStorage.getItem('isLoggedIn')));
+      },[])
 
     const toggleSidebar = () => {
         setCollapsed(!collapsed);

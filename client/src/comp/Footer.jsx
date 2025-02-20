@@ -21,7 +21,7 @@ export default function Footer() {
                                         </div>
                                     </div>
                                     <p className='fs-6'>Leading Assessment provider in India</p>
-                                    <p className='fs-6'>© 2023 Copyrights<><br />A Product of KCE Developers</></p>                         
+                                    <p className='fs-6'>© {new Date().getFullYear()} Copyrights<><br />A Product of KCE Developers</></p>                         
                                 </div>                      
                             </div> 
         
