@@ -9,17 +9,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
+
 function Signup() {
     const [name,setName]=useState();
     const [email,setEmail]=useState();
     const [password,setPassword]=useState();
+    const [message,setMessage]=useState();
     const navigate=useNavigate()
 
     const handleSubmit=(e)=>{
         e.preventDefault()
         axios.post("http://127.0.0.1:3001/register",{name,email,password,scorelr:[10],scoreqa:[10],score25:[25]})
-        .then(result=>{console.log(result)
-        navigate('/')
+        .then(result=>{
+          if(result.data==="user already exist"){
+            setMessage(result.data)
+          }else{
+            console.log(result)
+            navigate('/')
+          } 
         })
         .catch(error=>{
             if (error.code === 'ERR_NETWORK'){
@@ -62,6 +69,7 @@ function Signup() {
                   <input type="text" className="form-control" id="name" placeholder="Enter your name" required
                    onChange={(e)=>{setName(e.target.value)}} />
                 </div>
+                
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email address</label>
                   <input type="email" className="form-control" id="email" placeholder="Enter your email" required
@@ -71,6 +79,9 @@ function Signup() {
                   <label htmlFor="password" className="form-label">Password</label>
                   <input type="password" className="form-control" id="password" placeholder="Enter your password" required
                   onChange={(e)=>{setPassword(e.target.value)}}/>
+                </div>
+                <div className="alert-danger text-center text-danger form-label">
+                    {message}
                 </div>
                 <div className="d-grid">
                   <button type="submit" className="btn btn-primary mb-3">Sign Up</button>

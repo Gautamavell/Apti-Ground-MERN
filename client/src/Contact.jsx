@@ -57,7 +57,7 @@ export default function Contact() {
                     <CardGroup className='gap-4'>
                             <Card>
                                 <CardBody>
-                                        <form className='p-5 align-items-center' action="#">
+                                        <form className='p-5 align-items-center' action="#" >
                                         <div className='mb-3'>
                                         <input type="text" id='name' className='form-control' placeholder='Enter your Name'/>
                                         </div>

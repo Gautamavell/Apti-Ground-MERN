@@ -4,32 +4,54 @@ const cors = require("cors");
 const StudentsModel = require('./models/students');
 const { QuestionModelqa, QuestionModellr } = require("./models/questions");
 const ConnectStudentsDB = require("./dbs/studentsdb");
-
+const app = express();
+const bcrypt = require('bcrypt');
 ConnectStudentsDB();
 
-const app = express();
+
 app.use(express.json());
 app.use(cors());
 
 app.post('/register',(req,res)=>{
-    StudentsModel.create(req.body)
-    .then(student=>res.json(student))
-    .catch(err=>res.json(err))
-})
+    const {email,password}=req.body;
+    StudentsModel.findOne({email:email})
+    .then(async exist=>{
+            if(exist){
+                console.log("User exists");
+                res.json("user already exist");
+            }else{
+                await bcrypt.hash(password,7)
+                .then(hashed=>{
+                    req.body.password=hashed;
+                    StudentsModel.create(req.body)
+                    .then(student=>res.json(student))
+                    .catch(err=>res.json(err))
+                }).catch(err=>{
+                    console.error(err);
+                    res.json("Error hashing password. try again.")
+                })
+            } 
+})})
 
 app.post('/login',(req,res)=>{
     const {email,password}=req.body;
     StudentsModel.findOne({email:email})
-    .then(user=>{
+    .then(async user=>{
         if(user){
-            if(user.password===password){
-                res.json(["success",user])
-            }else{
-                res.json("Incorrect Password")
-            }
+            await bcrypt.compare(password,user.password)
+                .then(doMatch=>{
+                    if(doMatch){
+                        res.json(["success",user])
+                    }
+                    else{
+                        res.json("Incorrect Password")
+                    }
+                })
         }else{
             res.json("No User Found")
         }
+    }).catch(err=>{
+        console.log(err);
     })    
 })
 

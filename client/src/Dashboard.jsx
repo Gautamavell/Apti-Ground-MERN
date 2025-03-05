@@ -100,7 +100,11 @@ export default function Dashboard() {
         for (let i = 1; i < a.length; i++) {
             s =s+ +a[i];
         }
-        return ((s / ((a.length-1)*a[0])) * 100).toFixed(2);
+        const score= ((s / ((a.length-1)*a[0])) * 100).toFixed(2);
+        if(isNaN(score)){
+            return 0;
+        }
+        return score;
     }
     const progressScore25=calcProgress(userDetails.score25);
     const progressScorelr=calcProgress(userDetails.scorelr);
