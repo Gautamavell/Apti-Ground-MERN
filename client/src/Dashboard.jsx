@@ -9,6 +9,7 @@ import { faBrain } from '@fortawesome/free-solid-svg-icons';
 import Footer from './comp/Footer';
 import './css/sidebar.css'
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 
 
@@ -23,6 +24,15 @@ export default function Dashboard() {
     
     useEffect(()=>{
         if(!loggedIn){
+            toast("Logged out!",{
+                duration:1500,
+                style:{
+                backgroundColor:'rgb(131, 131, 131)',
+                color:'white',
+                padding:'10px',
+                borderRadius:'5px',
+                fontSize:'16px',
+              }});
           navigate('/');
         }
       },[loggedIn])
@@ -91,9 +101,6 @@ export default function Dashboard() {
         localStorage.setItem('isLoggedIn',JSON.stringify(false));
         setloggedIn(false);
     }
-
-    
-        
 
     function calcProgress(a) {
         let s = 0;
@@ -222,7 +229,7 @@ export default function Dashboard() {
                             <Col md={6}>
                                 <Card className="stats-card">
                                     <Card.Body>
-                                        <h5>Test LR Analysis</h5>
+                                        <h5>Logical and Reasoning Analysis</h5>
                                         {renderChart(userDetails.scorelr, 'chart2' ,10)}
                                     </Card.Body>
                                 </Card>
@@ -230,7 +237,7 @@ export default function Dashboard() {
                             <Col md={6}>
                                 <Card className="stats-card">
                                     <Card.Body>
-                                        <h5>Test QA Analysis</h5>
+                                        <h5>Quantitative Analytics Analysis</h5>
                                         {renderChart(userDetails.scoreqa, 'chart3', 10)}
                                     </Card.Body>
                                 </Card>

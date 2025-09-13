@@ -6,15 +6,51 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardBody, CardGroup, CardImg,  Nav } from 'react-bootstrap';
 import logo from './assets/contactus.svg';
 import './css/sidebar.css'
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 
 
 export default function Contact() {
     const [collapsed,setCollapsed]=useState(false);
+    const [name,setName]=useState();
+    const [email,setEmail]=useState();
+    const [phone,setPhone]=useState();
+    const [message,setMessage]=useState();
 
     const toggleSidebar=()=>{
         setCollapsed(!collapsed)
     }
+
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        axios.post('http://127.0.0.1:3001/contact',{name,phone,email,message})
+        .then(success=>{
+            console.log("Message sent to admin!");
+
+            Swal.fire({
+                      title: 'Successfull!',
+                      text: 'Your response have been sent successfully.',
+                      icon: 'success',
+                      confirmButtonText: 'OK'
+                    });
+            setName("");
+            setEmail("");
+            setPhone("");
+            setMessage("");
+        })
+        .catch(err=>{
+            console.log(err)
+            Swal.fire({
+                title: 'Failed!',
+                text: 'Response failed due to network issue.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+              });
+        })
+    }
+
     return (
     <div>
       <Header/>
@@ -57,18 +93,18 @@ export default function Contact() {
                     <CardGroup className='gap-4'>
                             <Card>
                                 <CardBody>
-                                        <form className='p-5 align-items-center' action="#" >
+                                        <form className='p-5 align-items-center' onSubmit={handleSubmit} >
                                         <div className='mb-3'>
-                                        <input type="text" id='name' className='form-control' placeholder='Enter your Name'/>
+                                        <input type="text" id='name' className='form-control' value={name} onChange={(e)=>{setName(e.target.value)}} placeholder='Enter your Name'/>
                                         </div>
                                         <div className='mb-3'>
-                                        <input type="number" id='phone' className='form-control' placeholder='Enter Phone Number' />
+                                        <input type="number" id='phone' className='form-control' value={phone} placeholder='Enter Phone Number' onChange={(e)=>{setPhone(e.target.value)}}/>
                                         </div>
                                         <div className='mb-3'>
-                                            <input type="email" id="mail" className='form-control' placeholder='Enter Mail Id'/>
+                                            <input type="email" id="mail" className='form-control' value={email} placeholder='Enter Mail Id' onChange={(e)=>{setEmail(e.target.value)}}/>
                                         </div>
                                         <div className='mb-3'>
-                                            <textarea id="message" className='form-control' rows={4} cols={50}></textarea>
+                                            <textarea id="message" className='form-control' rows={4} cols={50} value={message} onChange={(e)=>{setMessage(e.target.value)}}></textarea>
                                         </div>
                                         <div className='d-flex justify-content-center '>
                                             <button className='btn btn-secondary w-100 '>Submit</button>

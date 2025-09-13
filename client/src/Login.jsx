@@ -11,6 +11,9 @@ import { Card, Carousel } from "react-bootstrap";
 import goat1 from './assets/goat1.jpg'
 import goat2 from './assets/goat2.jpg'
 import GOAT from './assets/GOAT.jpg'
+import Swal from 'sweetalert2';
+import { toast,Toaster } from 'react-hot-toast';
+import Googlelogin from "./comp/GoogleLogin"
 
 
 
@@ -19,7 +22,8 @@ function Login() {
   const [password,setPassword]=useState();
   const navigate=useNavigate();
   const [message,setMessage]=useState();
-  const [loggedIn,setloggedIn]=useState(false); 
+  const [loggedIn,setloggedIn]=useState(false);
+   
 
   useEffect(()=>{
     setloggedIn(JSON.parse(localStorage.getItem('isLoggedIn')))
@@ -59,6 +63,15 @@ function Login() {
           localStorage.setItem("userDetails", JSON.stringify(userDetails));
           localStorage.setItem("isLoggedIn", JSON.stringify(true));
           setloggedIn(!loggedIn);
+          toast("Login successful!",{
+            duration:1500,
+            style:{
+            backgroundColor:'#28a745',
+            color:'white',
+            padding:'10px',
+            borderRadius:'5px',
+            fontSize:'16px',
+          }});
         } else {
           setMessage(result.data);
         }
@@ -69,13 +82,21 @@ function Login() {
         } else {
           console.error("Error response:", error.response);
         }
-        alert("server is not connected. You are seeing the actual interface with dummy User.")
+        Swal.fire({
+          title: 'Server is not Connected',
+          text: 'You are seeing the actual interface with dummy User.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
         localStorage.setItem("userDetails", JSON.stringify(dummyUser));
+        localStorage.setItem("isLoggedIn", JSON.stringify(true));
+        setloggedIn(!loggedIn);
         navigate("/home");
 
       });
   };
   return (
+
     <div className="container-fluid" style={{ height: "100vh" }}>
       <div className="row flex-grow-1 " style={{ height: "100%" }}>
         <div className="col-12 col-lg-5  mx-0 ps-md-4 pt-3 pb-3 align-item-center ">
@@ -131,6 +152,8 @@ function Login() {
                     >
                       Sign Up
                     </Link>
+                    <hr></hr>
+                    <Googlelogin/>
                   </div>
                 </form>
               </div>
@@ -239,7 +262,7 @@ function Login() {
                 </Carousel.Item>
               </Carousel>
              
-              <div className="d-flex m-5 " style={{borderRadius:'7px' ,backgroundColor:'rgb(255, 255, 255)'}}>
+              <div className="d-flex m-5 " style={{borderRadius:'9px' ,backgroundColor:'rgb(255, 255, 255)'}}>
                 <FontAwesomeIcon  className=" p-2" icon={faBrain} style={{color:'black', width:'65', height:'65'}} />
                 <div className="d-flex flex-column p-2 mb-2" style={{color:'#000'}}>
                   <div style={{fontWeight: 'bold',fontSize: '1.5rem'}}>APTI-GROUND</div>
@@ -252,6 +275,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <Toaster/>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, Row, Col, Button, Form, ProgressBar, ListGroup, Card } from 'react-bootstrap';
 import './css/Test.css'; 
 import {Sample25,SampleLR,SampleQA} from './SampleQuestions';
+import Swal from 'sweetalert2';
 
 export default function Test({type}) {
     const [questions, setQuestions] = useState([]);
@@ -81,15 +82,28 @@ export default function Test({type}) {
     };
 
     const handleSubmit = () => {
-        let score=0
-        for(let i=0;i<questions.length;i++){
-            if (chosenOption.current[i] === questions[i].correctAnswer) {
-                score=score+1;
+        Swal.fire({
+            title: 'Confirm Submission',
+            text: "Do you want to submit?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, submit it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                let score=0
+                for(let i=0;i<questions.length;i++){
+                     if (chosenOption.current[i] === questions[i].correctAnswer) {
+                        score=score+1;
+                    }
+                }
+                localStorage.setItem('score', score);
+                localStorage.removeItem('isScoreUpdated');
+                window.location.href =type+'/result';
             }
-        }
-        localStorage.setItem('score', score);
-        localStorage.removeItem('isScoreUpdated');
-        window.location.href =type+'/result';
+          });
+        
     };
 
     if (!questions[currentQuestion]) {

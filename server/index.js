@@ -1,16 +1,53 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const StudentsModel = require('./models/students');
+require('dotenv').config()
+const {StudentsModel,ContactUsModel} = require('./models/students');
 const { QuestionModelqa, QuestionModellr } = require("./models/questions");
 const ConnectStudentsDB = require("./dbs/studentsdb");
 const app = express();
 const bcrypt = require('bcrypt');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client('540798998843-eqhne287gon8r8tv4297irt1t75kgnu1.apps.googleusercontent.com');  
+
+
 ConnectStudentsDB();
 
 
 app.use(express.json());
 app.use(cors());
+
+app.post('/googlelogin',async (req, res) => {
+    const { token } = req.body;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: '540798998843-eqhne287gon8r8tv4297irt1t75kgnu1.apps.googleusercontent.com', 
+      });
+  
+      const payload = ticket.getPayload();
+      const { name, email } = payload;
+      console.log('user',payload)
+     
+      const student = await StudentsModel.findOne({ email });
+      if (!student) {
+            StudentsModel.create({name,email,scorelr:[10],scoreqa:[10],score25:[25]})
+            .then(student=>res.json(["success",student]))
+            .catch(err=>res.json(err))
+        }
+        else{
+            console.log("google user found")
+            res.json(["success",student])
+        }
+
+    } catch (error) {
+      console.error('Error during Google authentication:', error);
+      res.status(400).json({
+        success: false,
+        message: 'Invalid token',
+      });
+    }
+  });
 
 app.post('/register',(req,res)=>{
     const {email,password}=req.body;
@@ -71,36 +108,23 @@ app.get('/testlr',(req, res)=>{
         });
 });
 
-app.get("/test25",(req,res)=>{
-    let data=[];
-    QuestionModellr.aggregate([{$sample:{size:13}}])
-        .then(questions=>{
-            if(Array.isArray(questions)){
-                console.log("Fetched from lr for test25...");
-                data=[...questions];
-            }else{
-                throw new error("Expected questions to be in array");
-            }
-        })
-        .catch(err=>{
-            console.error(err);
-            res.status(500).send(err.message);
-        })
-        QuestionModelqa.aggregate([{$sample:{size:12}}])
-        .then(questions=>{
-            if(Array.isArray(questions)){
-                console.log("Fetched from qa for test25...");
-                data=[...questions];
-            }else{
-                throw new error("Expected questions to be in array");
-            }
-        })
-        .catch(err=>{
-            console.error(err);
-            res.status(500).send(err.message);
-        })
+app.get("/test25",async (req,res)=>{
+    try {
+        const questionsLR = await QuestionModellr.aggregate([{ $sample: { size: 13 } }]);
+        const questionsQA = await QuestionModelqa.aggregate([{ $sample: { size: 12 } }]);
+
+        const data = [...questionsLR, ...questionsQA];
+
+        console.log("Fetched from LR for test25... Number of questions:", questionsLR.length);
+        console.log("Fetched from QA for test25... Number of questions:", questionsQA.length);
+        console.log("Total questions:", data.length);
+
         res.json(data);
-})
+    } catch (err) {
+        console.error("Error fetching test25 questions:", err);
+        res.status(500).send("Failed to fetch test25 questions");
+    }
+});
 
 app.get('/testqa', (req, res) => {
     QuestionModelqa.aggregate([{ $sample: { size: 10 } }])
@@ -130,9 +154,16 @@ app.put('/updateScore',(req,res)=>{
         console.log("Error updating user details :",err);
         return res.status(404).send('User not found');
     })
+})
 
+app.post('/contact',(req,res)=>{
+    ContactUsModel.create(req.body)
+    .then(success=>res.json(success))
+    .catch(err=>res.json(err))
 })
 
 app.listen(3001, () => {
     console.log('Server is running on port 3001');
 });
+
+

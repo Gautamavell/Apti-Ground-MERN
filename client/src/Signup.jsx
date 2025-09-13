@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import bg from './assets/login-div.jpg'
 import { faBrain } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 

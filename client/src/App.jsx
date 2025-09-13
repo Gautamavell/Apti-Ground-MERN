@@ -10,8 +10,8 @@ import About from './About';
 import Service from './Service';
 import Terms from './Terms';
 import Contact from './Contact';
-import ScrollToTop from './ScrollToTop';
-
+import ScrollToTop from './comp/ScrollToTop';
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -19,6 +19,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <Toaster/>
       <ScrollToTop/>
       <Routes>
         <Route path='/register' element={<Signup/>}></Route>
@@ -35,7 +36,7 @@ function App() {
         <Route path='/testlr/result' element={<Result type='scorelr' test='Logical and Reasoning'/>}></Route>
         <Route path='/testqa/result' element={<Result type='scoreqa' test='Quantitative Analysis'/>}></Route>
         <Route path='/test25/result' element={<Result type='score25' test="Today's 25"/>}></Route>
-      </Routes>    
+      </Routes>  
     </BrowserRouter>
   )
 }
