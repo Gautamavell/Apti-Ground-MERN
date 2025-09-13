@@ -20,7 +20,7 @@ function Signup() {
 
     const handleSubmit=(e)=>{
         e.preventDefault()
-        axios.post("http://127.0.0.1:3001/register",{name,email,password,scorelr:[10],scoreqa:[10],score25:[25]})
+        axios.post(import.meta.env.VITE_BASE_URL+"/register",{name,email,password,scorelr:[10],scoreqa:[10],score25:[25]})
         .then(result=>{
           if(result.data==="user already exist"){
             setMessage(result.data)

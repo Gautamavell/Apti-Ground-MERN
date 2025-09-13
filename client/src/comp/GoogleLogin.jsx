@@ -14,7 +14,7 @@ const Googlelogin = () => {
   const handleLoginSuccess = async (response) => {
     console.log('Google Login Success:', response);
     try {
-      const result = await axios.post('http://localhost:3001/googlelogin', { token: response.credential });
+      const result = await axios.post(import.meta.env.VITE_BASE_URL+'/googlelogin', { token: response.credential });
       console.log('Backend Response:', result);
   
       if (result.data[0] === 'success') {

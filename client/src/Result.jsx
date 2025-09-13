@@ -23,7 +23,7 @@ export default function Result({ type,test }) {
             localStorage.setItem('isScoreUpdated',JSON.stringify(updateRef.current));
             const updateUserDetails = async()=>{
                 try {
-                    await axios.put('http://127.0.0.1:3001/updateScore', userDetails);
+                    await axios.put(import.meta.env.VITE_BASE_URL+'/updateScore', userDetails);
                 } catch (error) {
                     console.error('Error updating user details (Results):', error);
                 }

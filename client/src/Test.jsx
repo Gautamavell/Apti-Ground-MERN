@@ -16,8 +16,9 @@ export default function Test({type}) {
 
 
     useEffect(() => {
-        const url='http://127.0.0.1:3001/';
-        axios.get(url+type)
+        const url=import.meta.env.VITE_BASE_URL;
+        console.log()
+        axios.get(url+'/'+type)
             .then(response => {
                 console.log('Calling endpoint:',url+type);
                 console.log(response);

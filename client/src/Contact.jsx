@@ -23,9 +23,11 @@ export default function Contact() {
         setCollapsed(!collapsed)
     }
 
+    console.log(import.meta.env.VITE_BASE_URL);
+
     const handleSubmit=(e)=>{
         e.preventDefault();
-        axios.post('http://127.0.0.1:3001/contact',{name,phone,email,message})
+        axios.post(import.meta.env.VITE_BASE_URL+'/contact',{name,phone,email,message})
         .then(success=>{
             console.log("Message sent to admin!");
 

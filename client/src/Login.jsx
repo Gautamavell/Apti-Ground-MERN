@@ -55,7 +55,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:3001/login", { email, password })
+      .post(import.meta.env.VITE_BASE_URL+"/login", { email, password })
       .then((result) => {
         console.log(result);
         if (result.data[0] === "success") {
